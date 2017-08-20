@@ -18,6 +18,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	log.Println("Listening...")
 	if err := server.ListenAndServe(":" + port); err != nil {
 		log.Fatal(err)
 	}

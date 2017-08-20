@@ -32,6 +32,11 @@ func NewServer() (*Server, error) {
 
 	routes := Routes{
 		Route{
+			Method:  "GET",
+			Path:    "/health",
+			Handler: handlers.Health(),
+		},
+		Route{
 			Method:  "POST",
 			Path:    "/users",
 			Handler: handlers.PostUser(*ctx),
