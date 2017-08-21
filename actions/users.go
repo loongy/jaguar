@@ -1,9 +1,17 @@
 package actions
 
-import "github.com/loongy/jaguar-template/models"
+import (
+	"errors"
+
+	"github.com/loongy/jaguar-template/models"
+)
 
 func CreateUser(ctx Context, user *models.User) (*models.User, error) {
-	return ctx.Store.InsertUser(user)
+	userID, err := ctx.Store.InsertUser(user)
+	if err != nil {
+		return nil, err
+	}
+	return GetUser(ctx, userID)
 }
 
 func GetUsers(ctx Context, offset, limit int64) (models.Users, error) {
@@ -12,4 +20,18 @@ func GetUsers(ctx Context, offset, limit int64) (models.Users, error) {
 
 func GetUser(ctx Context, userID int64) (*models.User, error) {
 	return ctx.Store.GetUser(userID)
+}
+
+func UpdateUser(ctx Context, user *models.User) (*models.User, error) {
+	if !user.ID.Valid {
+		return nil, errors.New("Unexpected invalid value 'id'")
+	}
+	if err := ctx.Store.UpdateUser(user); err != nil {
+		return nil, err
+	}
+	return GetUser(ctx, user.ID.Int64)
+}
+
+func DeleteUser(ctx Context, userID int64) error {
+	return ctx.Store.DeleteUser(userID)
 }

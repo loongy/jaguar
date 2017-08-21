@@ -38,9 +38,9 @@ func UserModelFromDAO(dao *UserDAO) *models.User {
 	}
 }
 
-func (db *DB) InsertUser(user *models.User) (*models.User, error) {
+func (db *DB) InsertUser(user *models.User) (int64, error) {
 	if user == nil {
-		return nil, errors.New("Unexpected nil value 'user'")
+		return 0, errors.New("Unexpected nil value 'user'")
 	}
 	returnID := int64(0)
 	if err := sqlx.Get(db, &returnID, `
@@ -55,13 +55,12 @@ func (db *DB) InsertUser(user *models.User) (*models.User, error) {
 				NULL,
 				$1
 			) RETURNING ID`, user.EmailAddress); err != nil {
-		return nil, err
+		return 0, err
 	}
 	if returnID == 0 {
-		return nil, errors.New("Unexpected nil column 'id'")
+		return 0, errors.New("Unexpected nil column 'id'")
 	}
-	user.ID = nulls.ValidInt64(returnID)
-	return user, nil
+	return returnID, nil
 }
 
 func (db *DB) SelectUsers(offset, limit int64) (models.Users, error) {
@@ -86,6 +85,27 @@ func (db *DB) GetUser(userID int64) (*models.User, error) {
 	return UserModelFromDAO(dao), nil
 }
 
-func (db *DB) UpdateUser(user *models.User) (*models.User, error) {
-	return user, nil
+func (db *DB) UpdateUser(user *models.User) error {
+	if user == nil {
+		return errors.New("Unexpected nil value 'user'")
+	}
+	_, err := db.Exec(`
+		UPDATE users SET (
+			updated_at,
+			email_address
+		) = (
+			NOW(),
+			$2
+		) WHERE id=$1`, user.ID, user.EmailAddress)
+	return err
+}
+
+func (db *DB) DeleteUser(userID int64) error {
+	_, err := db.Exec(`
+		UPDATE users SET (
+			deleted_at
+		) = (
+			NOW()
+		) WHERE id=$1`, userID)
+	return err
 }
