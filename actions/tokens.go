@@ -1,6 +1,6 @@
 package actions
 
-import "github.com/loongy/jaguar-template/models"
+import "github.com/loongy/jaguar/models"
 
 func CreateToken(ctx Context, token *models.Token) (*models.Token, error) {
 	tokenID, err := ctx.Store.InsertToken(token)

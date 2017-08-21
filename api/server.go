@@ -6,8 +6,8 @@ import (
 
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
-	"github.com/loongy/jaguar-template/actions"
-	"github.com/loongy/jaguar-template/api/handlers"
+	"github.com/loongy/jaguar/actions"
+	"github.com/loongy/jaguar/api/handlers"
 )
 
 type Route struct {

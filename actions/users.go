@@ -3,7 +3,7 @@ package actions
 import (
 	"errors"
 
-	"github.com/loongy/jaguar-template/models"
+	"github.com/loongy/jaguar/models"
 )
 
 func CreateUser(ctx Context, user *models.User) (*models.User, error) {

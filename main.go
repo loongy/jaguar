@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/loongy/jaguar-template/api"
+	"github.com/loongy/jaguar/api"
 )
 
 func main() {

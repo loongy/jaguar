@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/loongy/jaguar-template/models"
-	"github.com/loongy/jaguar-template/nulls"
+	"github.com/loongy/jaguar/models"
+	"github.com/loongy/jaguar/nulls"
 )
 
 type UserDAO struct {

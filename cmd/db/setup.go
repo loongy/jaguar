@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/loongy/jaguar-template/storage/db"
+	"github.com/loongy/jaguar/storage/db"
 )
 
 func setup(db *db.DB) error {

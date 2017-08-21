@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/loongy/jaguar-template/actions"
-	"github.com/loongy/jaguar-template/models"
+	"github.com/loongy/jaguar/actions"
+	"github.com/loongy/jaguar/models"
 )
 
 func PostUser(ctx actions.Context) http.Handler {

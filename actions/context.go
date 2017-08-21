@@ -3,8 +3,8 @@ package actions
 import (
 	"os"
 
-	"github.com/loongy/jaguar-template/storage"
-	"github.com/loongy/jaguar-template/storage/db"
+	"github.com/loongy/jaguar/storage"
+	"github.com/loongy/jaguar/storage/db"
 )
 
 type Context struct {

@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"github.com/loongy/jaguar-template/models"
-	"github.com/loongy/jaguar-template/nulls"
-	"github.com/loongy/jaguar-template/storage/db"
+	"github.com/loongy/jaguar/models"
+	"github.com/loongy/jaguar/nulls"
+	"github.com/loongy/jaguar/storage/db"
 )
 
 func seed(db *db.DB) error {

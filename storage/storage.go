@@ -3,7 +3,7 @@ package storage
 import (
 	"io"
 
-	"github.com/loongy/jaguar-template/models"
+	"github.com/loongy/jaguar/models"
 )
 
 type Store interface {

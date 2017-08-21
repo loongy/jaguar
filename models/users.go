@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/loongy/jaguar-template/nulls"
+	"github.com/loongy/jaguar/nulls"
 )
 
 type User struct {
