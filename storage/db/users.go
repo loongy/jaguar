@@ -11,11 +11,11 @@ import (
 )
 
 type UserDAO struct {
-	CreatedAt    *time.Time  `db:"created_at"`
-	UpdatedAt    *time.Time  `db:"updated_at"`
-	DeletedAt    *time.Time  `db:"deleted_at"`
-	ID           nulls.Int64 `db:"id"`
-	EmailAddress nulls.Int64 `db:"email_address"`
+	CreatedAt    *time.Time   `db:"created_at"`
+	UpdatedAt    *time.Time   `db:"updated_at"`
+	DeletedAt    *time.Time   `db:"deleted_at"`
+	ID           nulls.Int64  `db:"id"`
+	EmailAddress nulls.String `db:"email_address"`
 }
 
 func UserDAOFromModel(user *models.User) *UserDAO {
