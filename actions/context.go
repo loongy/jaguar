@@ -1,8 +1,6 @@
 package actions
 
 import (
-	"os"
-
 	"github.com/loongy/jaguar/storage"
 	"github.com/loongy/jaguar/storage/db"
 )
@@ -11,8 +9,8 @@ type Context struct {
 	Store storage.Store
 }
 
-func NewContext() (*Context, error) {
-	db, err := db.NewPostgresDB(os.Getenv("DATABASE_URL"))
+func NewContext(dbURL string) (*Context, error) {
+	db, err := db.NewPostgresDB(dbURL)
 	if err != nil {
 		return nil, err
 	}

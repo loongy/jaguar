@@ -23,13 +23,7 @@ type Server struct {
 	*mux.Router
 }
 
-func NewServer() (*Server, error) {
-
-	ctx, err := actions.NewContext()
-	if err != nil {
-		return nil, err
-	}
-
+func NewServer(ctx actions.Context) (*Server, error) {
 	routes := Routes{
 		Route{
 			Method:  "GET",
@@ -39,32 +33,32 @@ func NewServer() (*Server, error) {
 		Route{
 			Method:  "POST",
 			Path:    "/users",
-			Handler: handlers.PostUser(*ctx),
+			Handler: handlers.PostUser(ctx),
 		},
 		Route{
 			Method:  "GET",
 			Path:    "/users",
-			Handler: handlers.GetUsers(*ctx),
+			Handler: handlers.GetUsers(ctx),
 		},
 		Route{
 			Method:  "GET",
 			Path:    "/users/{userID}",
-			Handler: handlers.GetUser(*ctx),
+			Handler: handlers.GetUser(ctx),
 		},
 		Route{
 			Method:  "PUT",
 			Path:    "/users/{userID}",
-			Handler: handlers.PutUser(*ctx),
+			Handler: handlers.PutUser(ctx),
 		},
 		Route{
 			Method:  "PATCH",
 			Path:    "/users/{userID}",
-			Handler: handlers.PatchUser(*ctx),
+			Handler: handlers.PatchUser(ctx),
 		},
 		Route{
 			Method:  "DELETE",
 			Path:    "/users/{userID}",
-			Handler: handlers.DeleteUser(*ctx),
+			Handler: handlers.DeleteUser(ctx),
 		},
 	}
 
