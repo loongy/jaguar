@@ -31,9 +31,14 @@ func seedUserTable(db *db.DB) (models.Users, error) {
 	}
 
 	for i, user := range users {
-		user, err := db.InsertUser(user)
+		userID, err := db.InsertUser(user)
 		if err != nil {
 			log.Println("Insert user error: '", err, "'")
+			continue
+		}
+		user, err := db.GetUser(userID)
+		if err != nil {
+			log.Println("Get user error: '", err, "'")
 			continue
 		}
 		users[i] = user
