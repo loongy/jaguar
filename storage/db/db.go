@@ -9,8 +9,8 @@ type DB struct {
 	*sqlx.DB
 }
 
-func NewPostgresDB(url string) (*DB, error) {
-	db, err := sqlx.Open("postgres", url)
+func NewDB(driver, url string) (*DB, error) {
+	db, err := sqlx.Open(driver, url)
 	if err != nil {
 		return nil, err
 	}

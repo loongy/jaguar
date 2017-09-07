@@ -6,8 +6,8 @@ import (
 	"github.com/loongy/jaguar/models"
 )
 
-type Store interface {
-	TokenStore
+type DataStore interface {
+	SessionStore
 	UserStore
 }
 
@@ -15,11 +15,11 @@ type FileStore interface {
 	SaveImage(filename string, reader io.Reader) (*models.Image, error)
 }
 
-type TokenStore interface {
-	InsertToken(token *models.Token) (int64, error)
-	SelectTokens(offset, limit int64) (models.Tokens, error)
-	GetToken(tokenID int64) (*models.Token, error)
-	DeleteToken(tokenID int64) error
+type SessionStore interface {
+	InsertSession(session *models.Session) (int64, error)
+	SelectSessions(offset, limit int64) (models.Sessions, error)
+	GetSession(sessionID int64) (*models.Session, error)
+	DeleteSession(sessionID int64) error
 }
 
 type UserStore interface {

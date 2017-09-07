@@ -28,7 +28,7 @@ func main() {
 	// Parse flags
 	flag.Parse()
 
-	ctx, err := actions.NewContext(*dbURL)
+	ctx, err := actions.NewContext("postgres", *dbURL)
 	if err != nil {
 		log.Fatal(err)
 	}

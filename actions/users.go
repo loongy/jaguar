@@ -7,7 +7,7 @@ import (
 )
 
 func CreateUser(ctx Context, user *models.User) (*models.User, error) {
-	userID, err := ctx.Store.InsertUser(user)
+	userID, err := ctx.DataStore.InsertUser(user)
 	if err != nil {
 		return nil, err
 	}
@@ -15,23 +15,23 @@ func CreateUser(ctx Context, user *models.User) (*models.User, error) {
 }
 
 func GetUsers(ctx Context, offset, limit int64) (models.Users, error) {
-	return ctx.Store.SelectUsers(offset, limit)
+	return ctx.DataStore.SelectUsers(offset, limit)
 }
 
 func GetUser(ctx Context, userID int64) (*models.User, error) {
-	return ctx.Store.GetUser(userID)
+	return ctx.DataStore.GetUser(userID)
 }
 
 func UpdateUser(ctx Context, user *models.User) (*models.User, error) {
 	if !user.ID.Valid {
 		return nil, errors.New("Unexpected invalid value 'id'")
 	}
-	if err := ctx.Store.UpdateUser(user); err != nil {
+	if err := ctx.DataStore.UpdateUser(user); err != nil {
 		return nil, err
 	}
 	return GetUser(ctx, user.ID.Int64)
 }
 
 func DeleteUser(ctx Context, userID int64) error {
-	return ctx.Store.DeleteUser(userID)
+	return ctx.DataStore.DeleteUser(userID)
 }
