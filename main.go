@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/lib/pq" // initiliase the postgres driver
 	"github.com/loongy/jaguar/actions"
 	"github.com/loongy/jaguar/api"
 )

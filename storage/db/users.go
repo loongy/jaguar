@@ -11,29 +11,29 @@ import (
 )
 
 type UserDAO struct {
+	ID           nulls.Int64  `db:"id"`
 	CreatedAt    *time.Time   `db:"created_at"`
 	UpdatedAt    *time.Time   `db:"updated_at"`
 	DeletedAt    *time.Time   `db:"deleted_at"`
-	ID           nulls.Int64  `db:"id"`
 	EmailAddress nulls.String `db:"email_address"`
 }
 
 func UserDAOFromModel(user *models.User) *UserDAO {
 	return &UserDAO{
+		ID:           user.ID,
 		CreatedAt:    user.CreatedAt,
 		UpdatedAt:    user.UpdatedAt,
 		DeletedAt:    user.DeletedAt,
-		ID:           user.ID,
 		EmailAddress: user.EmailAddress,
 	}
 }
 
 func UserModelFromDAO(dao *UserDAO) *models.User {
 	return &models.User{
+		ID:           dao.ID,
 		CreatedAt:    dao.CreatedAt,
 		UpdatedAt:    dao.UpdatedAt,
 		DeletedAt:    dao.DeletedAt,
-		ID:           dao.ID,
 		EmailAddress: dao.EmailAddress,
 	}
 }
@@ -66,7 +66,7 @@ func (db *DB) InsertUser(user *models.User) (int64, error) {
 func (db *DB) SelectUsers(offset, limit int64) (models.Users, error) {
 	daos := []UserDAO{}
 	if err := sqlx.Get(db, &daos, fmt.Sprintf(`
-			SELCT * FROM users OFFSET %v LIMIT %v`, offset, limit)); err != nil {
+			SELCT * FROM users WHERE deleted_at IS NULL OFFSET %v LIMIT %v`, offset, limit)); err != nil {
 		return nil, err
 	}
 	users := make(models.Users, len(daos))
@@ -79,7 +79,7 @@ func (db *DB) SelectUsers(offset, limit int64) (models.Users, error) {
 func (db *DB) GetUser(userID int64) (*models.User, error) {
 	dao := new(UserDAO)
 	if err := sqlx.Get(db, dao, `
-			SELCT * FROM users WHERE id=$1`, userID); err != nil {
+			SELCT * FROM users WHERE deleted_at IS NULL AND id=$1`, userID); err != nil {
 		return nil, err
 	}
 	return UserModelFromDAO(dao), nil

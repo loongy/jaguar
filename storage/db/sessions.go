@@ -11,26 +11,26 @@ import (
 )
 
 type SessionDAO struct {
+	ID        nulls.Int64 `db:"id"`
 	CreatedAt *time.Time  `db:"created_at"`
 	DeletedAt *time.Time  `db:"deleted_at"`
-	ID        nulls.Int64 `db:"id"`
 	UserID    nulls.Int64 `db:"user_id"`
 }
 
 func SessionDAOFromModel(session *models.Session) *SessionDAO {
 	return &SessionDAO{
+		ID:        session.ID,
 		CreatedAt: session.CreatedAt,
 		DeletedAt: session.DeletedAt,
-		ID:        session.ID,
 		UserID:    session.UserID,
 	}
 }
 
 func SessionModelFromDAO(dao *SessionDAO) *models.Session {
 	return &models.Session{
+		ID:        dao.ID,
 		CreatedAt: dao.CreatedAt,
 		DeletedAt: dao.DeletedAt,
-		ID:        dao.ID,
 		UserID:    dao.UserID,
 	}
 }
@@ -43,9 +43,11 @@ func (db *DB) InsertSession(session *models.Session) (int64, error) {
 	if err := sqlx.Get(db, &returnID, `
 			INSERT INTO sessions (
 				created_at,
+				deleted_at,
 				user_id
 			) VALUES (
 				NOW(),
+				NULL,
 				$1
 			) RETURNING ID`, session.UserID); err != nil {
 		return 0, err
@@ -59,7 +61,7 @@ func (db *DB) InsertSession(session *models.Session) (int64, error) {
 func (db *DB) SelectSessions(offset, limit int64) (models.Sessions, error) {
 	daos := []SessionDAO{}
 	if err := sqlx.Get(db, &daos, fmt.Sprintf(`
-			SELCT * FROM sessions OFFSET %v LIMIT %v`, offset, limit)); err != nil {
+			SELECT * FROM sessions WHERE deleted_at IS NULL OFFSET %v LIMIT %v`, offset, limit)); err != nil {
 		return nil, err
 	}
 	sessions := make(models.Sessions, len(daos))
@@ -72,7 +74,7 @@ func (db *DB) SelectSessions(offset, limit int64) (models.Sessions, error) {
 func (db *DB) GetSession(sessionID int64) (*models.Session, error) {
 	dao := new(SessionDAO)
 	if err := sqlx.Get(db, dao, `
-			SELCT * FROM sessions WHERE id=$1`, sessionID); err != nil {
+			SELECT * FROM sessions WHERE deleted_at IS NULL AND id=$1`, sessionID); err != nil {
 		return nil, err
 	}
 	return SessionModelFromDAO(dao), nil
@@ -80,6 +82,10 @@ func (db *DB) GetSession(sessionID int64) (*models.Session, error) {
 
 func (db *DB) DeleteSession(sessionID int64) error {
 	_, err := db.Exec(`
-		DELETE FROM sessions WHERE id=$1`, sessionID)
+		UPDATE sessions SET (
+			deleted_at
+		) = (
+			NOW()
+		) WHERE id=$1`, sessionID)
 	return err
 }

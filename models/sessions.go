@@ -7,9 +7,9 @@ import (
 )
 
 type Session struct {
+	ID        nulls.Int64 `json:"id"`
 	CreatedAt *time.Time  `json:"created_at"`
 	DeletedAt *time.Time  `json:"deleted_at"`
-	ID        nulls.Int64 `json:"id"`
 	UserID    nulls.Int64 `json:"user_id"`
 }
 
