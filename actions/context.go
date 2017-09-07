@@ -5,10 +5,12 @@ import (
 	"github.com/loongy/jaguar/storage/db"
 )
 
+//
 type Context struct {
 	Store storage.Store
 }
 
+//
 func NewContext(dbURL string) (*Context, error) {
 	db, err := db.NewPostgresDB(dbURL)
 	if err != nil {

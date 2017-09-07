@@ -1,13 +1,18 @@
 package handlers
 
-import "net/http"
+import (
+	"encoding/json"
+	"net/http"
+)
 
 // Health returns a health check handler. It always responds with a status of
-// 201, and an empty JSON object.
+// 200, and a JSON object `{ "healthy": true }`.
 func Health() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte("{\"alive\":true}"))
+		if err := json.NewEncoder(w).Encode(map[string]interface{}{
+			"healthy": true,
+		}); err != nil {
+			w.WriteHeader(500)
+		}
 	})
 }
