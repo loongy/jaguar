@@ -7,7 +7,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/loongy/jaguar/models"
-	"github.com/loongy/jaguar/nulls"
+	"github.com/loongy/go-nulls"
 )
 
 type SessionDAO struct {
