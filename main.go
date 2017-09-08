@@ -8,6 +8,7 @@ import (
 	_ "github.com/lib/pq" // initiliase the postgres driver
 	"github.com/loongy/jaguar/actions"
 	"github.com/loongy/jaguar/api"
+	"github.com/loongy/jaguar/storage/db"
 )
 
 func main() {
@@ -29,11 +30,12 @@ func main() {
 	// Parse flags
 	flag.Parse()
 
-	ctx, err := actions.NewContext("postgres", *dbURL)
+	db, err := db.NewDB("postgres", *dbURL)
 	if err != nil {
 		log.Fatal(err)
 	}
-	server, err := api.NewServer(*ctx)
+	ctx := actions.NewContext(db, nil)
+	server, err := api.NewServer(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
